@@ -16,6 +16,16 @@ export default {
       type: 'string'
     },
     {
+      name: 'lat',
+      title: 'Geo Latitud',
+      type: 'string'
+    },
+    {
+      name: 'lon',
+      title: 'Geo Longitud',
+      type: 'string'
+    },
+    {
       name: 'webhookAt',
       title: 'Webhook at',
       type: 'datetime'

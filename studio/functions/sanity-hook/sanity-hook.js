@@ -17,37 +17,37 @@ exports.handler = async (event, context) => {
     })
 
     var project = null;
-    const query = '*[_type == "sampleProject" && _id == "791d011b-71ab-4a17-96e7-bd442663002e"] {title, excerpt}'
+    const query = '*[_type == "sampleProject" && _id == "791d011b-71ab-4a17-96e7-bd442663002e"] {title, google_place_id, webhookAt}'
     await client.fetch(query).then(projects => {
-      // projects.forEach(project => {
-      //   console.log(`${project.title}`)
-      // })
       project = projects[0];
     });
 
+    const now = new Date();
     var patchedProject = null;
-    const mutations = [{
-      patch: {
-        id: '791d011b-71ab-4a17-96e7-bd442663002e',
-        set: {
-          title: 'Testingggg!'
+    if (project.webhookAt==null || (Date.parse(project.webhookAt) + 120000) < now) {
+      const mutations = [{
+        patch: {
+          id: '791d011b-71ab-4a17-96e7-bd442663002e',
+          set: {
+            webhookAt: now.toISOString()
+          }
         }
-      }
-    }]
+      }]
 
-    await fetch(`https://${request.projectId}.api.sanity.io/v1/data/mutate/${request.dataset}`, {
-      method: 'post',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({mutations})
-    })
-      .then(response => response.json())
-      .then(function(result) {
-        patchedProject = result;
+      await fetch(`https://${request.projectId}.api.sanity.io/v1/data/mutate/${request.dataset}`, {
+        method: 'post',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({mutations})
       })
-      .catch(error => console.error(error))
+        .then(response => response.json())
+        .then(function(result) {
+          patchedProject = result;
+        })
+        .catch(error => console.error(error))     
+    }
 
     return {
       statusCode: 200,

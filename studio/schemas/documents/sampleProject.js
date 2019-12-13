@@ -16,6 +16,11 @@ export default {
       type: 'string'
     },
     {
+      name: 'webhookAt',
+      title: 'Webhook at',
+      type: 'datetime'
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',

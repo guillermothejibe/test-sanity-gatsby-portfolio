@@ -24,16 +24,26 @@ exports.handler = async (event, context) => {
 
     const now = new Date();
     var patchedProject = null;
-    if (project.webhookAt==null || (Date.parse(project.webhookAt) + 120000) < now) {
+    if (project.webhookAt==null || (Date.parse(project.webhookAt) + 10000) < now) {
+      var googlePlace = null;
+      await fetch(`https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyCusVq4j3q2YeW96E6pKFs_OsyZFGRSb9M&place_id=${project.google_place_id}&fields=name,formatted_address,formatted_phone_number,website,opening_hours/periods,reviews/author_name,reviews/author_url,reviews/profile_photo_url,reviews/rating,reviews/time,reviews/text,geometry/location`, {})
+        .then(response => response.json())
+        .then(function(result) {
+          googlePlace = result.result;
+        })
+        .catch(error => console.error(error))      
+
+
       const mutations = [{
         patch: {
           id: '791d011b-71ab-4a17-96e7-bd442663002e',
           set: {
+            lat: googlePlace.geometry.location.lat,
+            lon: googlePlace.geometry.location.lng,
             webhookAt: now.toISOString()
           }
         }
-      }]
-
+      }];
       await fetch(`https://${request.projectId}.api.sanity.io/v1/data/mutate/${request.dataset}`, {
         method: 'post',
         headers: {

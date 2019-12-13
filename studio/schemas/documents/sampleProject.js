@@ -18,12 +18,12 @@ export default {
     {
       name: 'lat',
       title: 'Geo Latitud',
-      type: 'string'
+      type: 'number'
     },
     {
       name: 'lon',
       title: 'Geo Longitud',
-      type: 'string'
+      type: 'number'
     },
     {
       name: 'webhookAt',

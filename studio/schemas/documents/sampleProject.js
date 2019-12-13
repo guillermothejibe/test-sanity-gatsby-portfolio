@@ -11,6 +11,11 @@ export default {
       type: 'string'
     },
     {
+      name: 'google_place_id',
+      title: 'Google Place ID',
+      type: 'string'
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',

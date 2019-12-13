@@ -1,0 +1,22 @@
+{
+  "name": "auth-fetch",
+  "version": "1.0.0",
+  "description": "netlify functions:create - default template for auth fetch function",
+  "main": "auth-fetch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "netlify",
+    "serverless",
+    "js",
+    "identity",
+    "authentication"
+  ],
+  "author": "Netlify",
+  "license": "MIT",
+  "dependencies": {
+    "@sanity/client": "^0.147.3",
+    "node-fetch": "^2.3.0"
+  }
+}

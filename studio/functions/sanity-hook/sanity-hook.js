@@ -1,5 +1,4 @@
 const algolia = require('./algolia-index.js');
-const algoliasearch = require('algoliasearch');
 const fetch = require('node-fetch')
 const request = require('request')
 const sanity = require('@sanity/client')

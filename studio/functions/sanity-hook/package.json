@@ -1,8 +1,8 @@
 {
-  "name": "auth-fetch",
+  "name": "sanity-hook",
   "version": "1.0.0",
   "description": "netlify functions:create - default template for auth fetch function",
-  "main": "auth-fetch.js",
+  "main": "sanity-hook.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

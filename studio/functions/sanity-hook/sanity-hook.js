@@ -42,7 +42,11 @@ function getClinics(request) {
 }
 
 function getMutation(clinic) {
-  if (clinic.google_place_id && (clinic.webhookAt==null || (Date.parse(clinic.webhookAt) + 10000) < now)) {
+  if (
+      clinic.google_place_id && 
+      (clinic.webhookAt==null || (Date.parse(clinic.webhookAt) + 10000) < now) && // Every 10 seconds 
+      (clinic.googleUpdatedAt==null || (Date.parse(clinic.googleUpdatedAt) + 60000) < now) && // Every 60 seconds 
+    ) {
     return googleMapsClient.place({
       placeid: clinic.google_place_id,
       fields: ['name', 'formatted_address', 'place_id', 'geometry']
@@ -58,7 +62,8 @@ function getMutation(clinic) {
             set: {
               lat: googlePlace.geometry.location.lat,
               lon: googlePlace.geometry.location.lng,
-              webhookAt: now.toISOString()
+              webhookAt: now.toISOString(),
+              googleUpdatedAt: now.toISOString()
             }
           }
         };

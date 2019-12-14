@@ -12,10 +12,15 @@ exports.handler = async (event, context) => {
     if (event.httpMethod !== "POST") return { statusCode: 405, body: "Method not allowed" };
 
     const request = JSON.parse(event.body);
+    // Get Created/Updated clinics
     var clinics = await getClinics(request);
-    console.log(clinics);
+    // Get mutations
     mutations = await asyncForEach(clinics, await getMutation);
-    updates = await updateClinics(request, mutations);
+    // Update clinics if needed
+    updates = [];
+    if (mutations.length > 0)
+      updates = await updateClinics(request, mutations);
+
     return {
       statusCode: 200,
       body: JSON.stringify({clinics: updates})

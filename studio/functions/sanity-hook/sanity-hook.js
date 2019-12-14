@@ -1,4 +1,7 @@
+const algolia = require('./algolia-index.js');
+const algoliasearch = require('algoliasearch');
 const fetch = require('node-fetch')
+const request = require('request')
 const sanity = require('@sanity/client')
 const googleMapsClient = require('@google/maps').createClient({
   key: process.env.GOOGLE_API_KEY,
@@ -11,19 +14,20 @@ exports.handler = async (event, context) => {
 
     if (event.httpMethod !== "POST") return { statusCode: 405, body: "Method not allowed" };
 
-    const request = JSON.parse(event.body);
+    const req = JSON.parse(event.body);
     // Get Created/Updated clinics
-    var clinics = await getClinics(request);
+    var clinics = await getClinics(req);
     // Get mutations
     mutations = await asyncForEach(clinics, await getMutation);
     // Update clinics if needed
     updates = [];
     if (mutations.length > 0)
-      updates = await updateClinics(request, mutations);
+      updates = await updateClinics(req, mutations);
 
+    indexRes = await algolia(clinics, process.env.ALGOLIA_API_KEY);
     return {
       statusCode: 200,
-      body: JSON.stringify({clinics: updates})
+      body: JSON.stringify({clinics: updates, index: indexRes})
     }
   } catch (err) {
     console.log(err) // output to netlify function log
@@ -34,15 +38,19 @@ exports.handler = async (event, context) => {
   }
 }
 
-function getClinics(request) {
-  const ids = request.ids.updated.concat(request.ids.created);
+function algoliaIndex(req) {
+  const sanityExportURL = `https://${req.projectId}.api.sanity.io/v1/data/export/${req.dataset}`;
+}
+
+function getClinics(req) {
+  const ids = req.ids.updated.concat(req.ids.created);
   const sanityClient = sanity({
-    projectId: request.projectId,
-    dataset: request.dataset,
+    projectId: req.projectId,
+    dataset: req.dataset,
     token: process.env.SANITY_API_KEY,
     useCdn: false
   });
-  var query = `*[_type == "sampleProject" && _id in [${ids.map(id => `"${id}"`).join(',')}]] {_id, title, google_place_id, webhookAt}`;
+  var query = `*[_type == "sampleProject" && _id in [${ids.map(id => `"${id}"`).join(',')}]]`;
   return sanityClient.fetch(query).then(function(results){ return results});
 }
 
@@ -82,8 +90,8 @@ function getMutation(clinic) {
   }
 }
 
-function updateClinics(request, mutations) {
-  return fetch(`https://${request.projectId}.api.sanity.io/v1/data/mutate/${request.dataset}`, {
+function updateClinics(req, mutations) {
+  return fetch(`https://${req.projectId}.api.sanity.io/v1/data/mutate/${req.dataset}`, {
     method: 'post',
     headers: {
       'Content-type': 'application/json',

@@ -16,6 +16,7 @@
   "author": "Netlify",
   "license": "MIT",
   "dependencies": {
+    "@google/maps": "^1.0.2",
     "@sanity/client": "^0.147.3",
     "node-fetch": "^2.3.0"
   }

@@ -26,6 +26,12 @@ export default {
       type: 'number'
     },
     {
+      name: 'googleUpdatedAt',
+      title: 'Google Updated at',
+      type: 'datetime'
+    },
+    {
+    {
       name: 'webhookAt',
       title: 'Webhook at',
       type: 'datetime'

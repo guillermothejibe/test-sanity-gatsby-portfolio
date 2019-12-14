@@ -12,7 +12,7 @@
     "lint": "lerna run lint",
     "postinstall": "lerna bootstrap",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-netlify-functions": "mkdir studio/dist/functions && cp -r studio/functions studio/dist/ && cd studio/dist/functions/sanity-hook && npm install"
+    "build-netlify-functions": "(mkdir studio/dist/functions && cp -r studio/functions studio/dist/ && cd studio/dist/functions/sanity-hook && npm install)"
   },
   "devDependencies": {
     "lerna": "^3.13.1"

@@ -1,6 +1,5 @@
 const algolia = require('./algolia-index.js');
 const fetch = require('node-fetch')
-const request = require('request')
 const sanity = require('@sanity/client')
 const googleMapsClient = require('@google/maps').createClient({
   key: process.env.GOOGLE_API_KEY,

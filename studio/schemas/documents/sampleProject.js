@@ -31,7 +31,6 @@ export default {
       type: 'datetime'
     },
     {
-    {
       name: 'webhookAt',
       title: 'Webhook at',
       type: 'datetime'

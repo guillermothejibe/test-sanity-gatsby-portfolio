@@ -45,7 +45,7 @@ function getMutation(clinic) {
   if (
       clinic.google_place_id && 
       (clinic.webhookAt==null || (Date.parse(clinic.webhookAt) + 10000) < now) && // Every 10 seconds 
-      (clinic.googleUpdatedAt==null || (Date.parse(clinic.googleUpdatedAt) + 60000) < now) && // Every 60 seconds 
+      (clinic.googleUpdatedAt==null || (Date.parse(clinic.googleUpdatedAt) + 60000) < now) // Every 60 seconds 
     ) {
     return googleMapsClient.place({
       placeid: clinic.google_place_id,

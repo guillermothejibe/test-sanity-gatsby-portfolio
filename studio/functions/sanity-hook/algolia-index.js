@@ -1,6 +1,4 @@
 const algoliasearch = require('algoliasearch');
-const fetch = require('request');
-const {bufferCount, map, mergeMap, toArray, tap} = require('rxjs/operators');
 
 // Algolia configuration
 const algoliaApp = '63VMOTLCS6';

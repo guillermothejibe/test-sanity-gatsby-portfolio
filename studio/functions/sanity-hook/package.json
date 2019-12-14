@@ -19,10 +19,6 @@
     "@google/maps": "^1.0.2",
     "@sanity/client": "^0.147.3",
     "algoliasearch": "^3.35.1",
-    "ndjson": "^1.5.0",
-    "node-fetch": "^2.3.0",
-    "request": "^2.88.0",
-    "rxjs": "^6.5.3",
-    "rxjs-stream": "^3.1.0"
+    "node-fetch": "^2.3.0"
   }
 }

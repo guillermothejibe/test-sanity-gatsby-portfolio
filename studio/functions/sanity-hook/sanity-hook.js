@@ -15,16 +15,20 @@ exports.handler = async (event, context) => {
     if (event.httpMethod !== "POST") return { statusCode: 405, body: "Method not allowed" };
 
     const req = JSON.parse(event.body);
+    console.log(req);
     // Get Created/Updated clinics
     var clinics = await getClinics(req);
+    console.log(clinics);
     // Get mutations
     mutations = await asyncForEach(clinics, await getMutation);
+    console.log(mutations);
     // Update clinics if needed
     updates = [];
     if (mutations.length > 0)
       updates = await updateClinics(req, mutations);
-
+    console.log(updates);
     indexRes = await algolia(clinics, process.env.ALGOLIA_API_KEY);
+    console.log(indexRes);
     return {
       statusCode: 200,
       body: JSON.stringify({clinics: updates, index: indexRes})

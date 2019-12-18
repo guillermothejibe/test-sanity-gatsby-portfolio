@@ -3,4 +3,4 @@
   to = "/"
   status = 200
 [build]
-  functions = "./studio/functions"
+  functions = "./functions"
